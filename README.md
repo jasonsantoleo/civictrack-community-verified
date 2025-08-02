@@ -1,12 +1,3 @@
-# civictrack-community-verified
-
-## 🚀 Live Demo & Preview
-
-**View the live application here:** https://your-deployment-url.vercel.app
-
-*A quick preview of the app in action:*
-
-![CivicTrack Preview](./preview.gif)
 
 ## The Problem
 
