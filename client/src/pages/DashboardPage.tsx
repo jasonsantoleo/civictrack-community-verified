@@ -20,6 +20,9 @@ export const DashboardPage = () => {
         </div>
       </header>
       <main className="flex-grow">
+        <button className="absolute bottom-10 right-10 z-10 p-4 font-bold text-white bg-blue-600 rounded-full shadow-lg hover:bg-blue-700">
+        Report Issue
+        </button>
         <Map />
       </main>
     </div>
