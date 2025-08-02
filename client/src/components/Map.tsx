@@ -6,19 +6,24 @@ import L from 'leaflet';
 import type { Issue } from '../pages/DashboardPage';
 import { getDistanceInMeters } from '../utils/geo';
 
-// Icon fix
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-const DefaultIcon = L.icon({ iconUrl: icon, shadowUrl: iconShadow, iconSize: [25, 41], iconAnchor: [12, 41] });
-L.Marker.prototype.options.icon = DefaultIcon;
+// --- NEW: Custom Icon Definitions ---
+const unverifiedIcon = new L.DivIcon({
+  className: 'custom-div-icon unverified-icon',
+  iconSize: [20, 20],
+});
 
-// --- PROPS DEFINITION ---
+const verifiedIcon = new L.DivIcon({
+  className: 'custom-div-icon verified-icon',
+  iconSize: [20, 20],
+});
+
+
 interface MapProps {
   issues: Issue[];
   onMove: (center: L.LatLng) => void;
   userLocation: L.LatLng | null;
   onVerify: (issueId: number) => void;
-  verifyingId: number | null; // <-- FIX 1: Add the prop to the interface
+  verifyingId: number | null;
 }
 
 const MapEvents = ({ onMove }: { onMove: (center: L.LatLng) => void }) => {
@@ -26,7 +31,7 @@ const MapEvents = ({ onMove }: { onMove: (center: L.LatLng) => void }) => {
   return null;
 };
 
-export const Map = ({ issues, onMove, userLocation, onVerify, verifyingId }: MapProps) => { // <-- FIX 2: Accept the prop here
+export const Map = ({ issues, onMove, userLocation, onVerify, verifyingId }: MapProps) => {
   const position: [number, number] = [13.0827, 80.2707]; // Chennai
 
   return (
@@ -38,7 +43,7 @@ export const Map = ({ issues, onMove, userLocation, onVerify, verifyingId }: Map
       <MapEvents onMove={onMove} />
 
       {userLocation && (
-        <Marker position={userLocation}>
+        <Marker position={userLocation} icon={new L.Icon({iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png'})}>
           <Popup>Your current location</Popup>
         </Marker>
       )}
@@ -48,14 +53,20 @@ export const Map = ({ issues, onMove, userLocation, onVerify, verifyingId }: Map
           ? getDistanceInMeters(userLocation.lat, userLocation.lng, issue.latitude, issue.longitude) 
           : Infinity;
         
-        const isVerifiable = distance < 50; // User is within 50 meters
+        const isVerifiable = distance < 50;
         const isCurrentlyVerifying = verifyingId === issue.id;
 
+        // --- NEW: Select icon based on status ---
+        const icon = issue.status === 'VERIFIED' ? verifiedIcon : unverifiedIcon;
+
         return (
-          <Marker key={issue.id} position={[issue.latitude, issue.longitude]}>
+          <Marker key={issue.id} position={[issue.latitude, issue.longitude]} icon={icon}>
             <Popup>
-              <div className="space-y-2">
-                <p className="font-bold">{issue.title}</p>
+              <div className="space-y-2 w-48">
+                {issue.image_url && (
+                    <img src={issue.image_url} alt={issue.title} className="w-full h-24 object-cover rounded-md" />
+                )}
+                <p className="font-bold text-base">{issue.title}</p>
                 <p>Status: <span className={issue.status === 'VERIFIED' ? 'text-green-600 font-semibold' : 'text-yellow-600 font-semibold'}>{issue.status}</span></p>
                 {issue.status === 'UNVERIFIED' && (
                   <button

@@ -2,3 +2,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* src/index.css */
+
+/* Base style for our custom circle icons */
+.custom-div-icon {
+    background-clip: padding-box;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Color for verified issues */
+  .verified-icon {
+    background-color: #22c55e; /* green-500 */
+  }
+  
+  
