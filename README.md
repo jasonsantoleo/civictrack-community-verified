@@ -29,7 +29,7 @@ We achieve this through a smart, achievable, and powerful system of **Geofenced 
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR_USERNAME/civictrack-community-verified.git](https://github.com/YOUR_USERNAME/civictrack-community-verified.git)
+    git clone [https://github.com/YOUR_USERNAME/civictrack-community-verified.git](https://github.com/jasonsantoleo/civictrack-community-verified.git)
     cd civictrack-community-verified
     ```
 
